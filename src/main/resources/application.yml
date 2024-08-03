@@ -40,6 +40,7 @@ performance-execution:
   loop-count: 25
   parallel-count: 10
   skip-loop: 5
+  round-count: 10
 
 logging:
   file:

@@ -20,7 +20,7 @@ public class SqlPerformanceStartupRunner implements CommandLineRunner {
 
   @Override
   public void run(String... args) {
-    IntStream.range(0, 10).forEach(i -> {
+    IntStream.range(0, performanceExecutionConfig.getRoundCount()).forEach(i -> {
       log.info("\nRound {}...", i);
       sqlPerformanceMeasurement.executeQueries(
         scriptConfig.getExecutions(),
