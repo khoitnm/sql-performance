@@ -1,0 +1,52 @@
+
+spring:
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=master
+    username: sa
+    password: Password1
+
+    # Execute all schema_*.sql when starting the application.
+    # Ref: https://www.baeldung.com/spring-boot-sql-import-files
+  #    data: schema_*.sql
+
+  jpa:
+    # Disabled it to avoid unexpected performance issue: https://www.baeldung.com/spring-open-session-in-view
+    open-in-view: false
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      #    show-sql: true
+      hibernate.format_sql: true
+
+      # This config must match with Dialect config in TransactionalOutboxConfig.persistor()
+      hibernate.dialect: org.hibernate.dialect.SQLServer2012Dialect
+
+script:
+  # If you want to call a stored procedure directly inside MS SQL Server, please use this:
+  # ```
+  # EXECUTE some_store_procedure 'param1', 2;
+  # ```
+  executions:
+    - query: "{ CALL some_store_procedure(?, ?) }"
+      params:
+        - "param1.1"
+        - 1
+    - query: "{ CALL some_store_procedure_2(?, ?) }"
+      params:
+        - "param2.1"
+        - 2
+performance-execution:
+  loop-count: 25
+  parallel-count: 10
+  skip-loop: 5
+
+logging:
+  file:
+    # ${logFileName} is configured in {@link LoggingConfig}
+    name: logs/application_loop-${performance-execution.loop-count}_thread-${performance-execution.parallel-count}_skip-${performance-execution.skip-loop}.log
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
+    dateformat: yyyy-MM-dd_HH-mm-ss
+  level:
+    com.zaxxer.hikari: OFF

@@ -1,0 +1,14 @@
+**/*.iml
+*/.idea
+/.idea
+/.metadata
+**/.DS_Store
+.classpath
+.factorypath
+.project
+.vscode
+*.log
+**/logs
+**/target
+**/build
+application-private*.yml
